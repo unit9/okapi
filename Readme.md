@@ -31,7 +31,7 @@ space_x_api_client = APIClient(
 
 # -s REST Resource plural will be appended automatically
 # -es ending not supported yet, thus you need to customize
-# it yourself like the Launch above
+# it yourself (there's an example below)
 dragons = space_x_api_client.dragon.list()
 
 print(dragons)

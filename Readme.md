@@ -13,6 +13,12 @@ After reading this very recent reddit's [post](https://www.reddit.com/r/Python/c
 turns out there's already some libraries that does this (well duh).
 There's a "what differs this from..." section below.
 
+## Installation
+
+Will not hosted on PyPI (yet).
+
+    pip install git+https://github.com/unit9/okapi
+
 ## Quick Example
 
 ```python

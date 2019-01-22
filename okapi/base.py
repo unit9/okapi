@@ -205,7 +205,7 @@ class APIClient(object):
 
         for resource in self.resources:
             attr_name = re.sub(
-                r"(\w)([A-Z])", r"\1-\2", resource.__name__
+                r"(\w)([A-Z])", r"\1_\2", resource.__name__
             ).lower()
             setattr(self, attr_name, resource(api_client=self))
 

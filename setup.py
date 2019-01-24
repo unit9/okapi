@@ -10,7 +10,6 @@ setup(
     license='MIT',
     packages=['okapi'],
     install_requires=[
-        'pytest',
         'requests==2.20.1',
         'requests-toolbelt==0.8.0',
     ],

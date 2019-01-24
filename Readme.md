@@ -88,4 +88,5 @@ Tested with Py 2.7 and 3.4
 
 Run in your terminal
 
+    pip install -r requirements.txt
     pytest

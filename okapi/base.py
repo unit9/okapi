@@ -139,7 +139,7 @@ class Resource(object):
             # turns into "standard" REST resource paths
             self.path = re.sub(
                 r"(\w)([A-Z])", r"\1-\2", self.__class__.__name__
-            ).lower() + 's'
+            ).lower().replace('_', '-') + 's'
 
     @property
     def url(self):

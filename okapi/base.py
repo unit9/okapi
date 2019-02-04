@@ -166,10 +166,7 @@ class Resource(object):
         )
         return data
 
-    def list(self, *args, **kwargs):
-        # put URL query as kwargs
-        paginate = kwargs.get('paginate', False)
-
+    def list(self, paginate=False, *args, **kwargs):
         url_queries = urlencode(kwargs)
         data = self.api_client.session._request(
             method='GET', url=self.url + '?' + url_queries, paginate=paginate

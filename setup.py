@@ -10,8 +10,8 @@ setup(
     license='MIT',
     packages=['okapi'],
     install_requires=[
-        'requests==2.20.1',
-        'requests-toolbelt==0.8.0',
+        'requests==2.21.0',
+        'requests-toolbelt==0.9.1',
     ],
     zip_safe=False
 )

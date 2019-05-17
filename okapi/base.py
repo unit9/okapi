@@ -18,7 +18,8 @@ logging.basicConfig(level=logging.DEBUG)
 # ===================== Google App Engine Support =============================
 # if run in GAE env, including dev_appserver, do necessary hacks
 if os.getenv('SERVER_SOFTWARE'):
-    appengine.monkeypatch()
+    if 'python27' in os.getenv('APPENGINE_RUNTIME'):
+        appengine.monkeypatch()
 
 
 class HTTPSession(requests.Session):

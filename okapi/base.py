@@ -15,11 +15,13 @@ logger = logging.getLogger('HTTP Transport')
 logging.basicConfig(level=logging.DEBUG)
 
 # ===================== Google App Engine Support =============================
-# if run in GAE env, including dev_appserver, do necessary hacks
-if os.getenv('SERVER_SOFTWARE'):
-    print(os.getenv('APPENGINE_RUNTIME'))
+# if run in Py 2 GAE env, including dev_appserver, do necessary hacks
+server_software = os.getenv('SERVER_SOFTWARE')
+logger.debug(server_software)
+if server_software:
+    logger.debug('APPENGINE_RUNTIME ' + os.getenv('APPENGINE_RUNTIME'))
     if 'python27' in os.getenv('APPENGINE_RUNTIME'):
-        print('is py2.7 runtime')
+        logger.debug('is py2.7 runtime')
         from requests_toolbelt.adapters import appengine
         appengine.monkeypatch()
 

@@ -16,11 +16,11 @@ logging.basicConfig(level=logging.DEBUG)
 
 # ===================== Google App Engine Support =============================
 # if run in Py 2 GAE env, including dev_appserver, do necessary hacks
-server_software = os.getenv('SERVER_SOFTWARE')
-logger.debug(server_software)
+server_software = os.getenv('SERVER_SOFTWARE', 'ENV_VAR_NOT_EXIST')
+logger.debug('SERVER_SOFTWARE: ' + server_software)
 if server_software:
-    logger.debug('APPENGINE_RUNTIME ' + os.getenv('APPENGINE_RUNTIME'))
-    if 'python27' in os.getenv('APPENGINE_RUNTIME'):
+    logger.debug('GAE_RUNTIME: ' + os.getenv('APPENGINE_RUNTIME', 'ENV_VAR_NOT_EXIST'))  # noqa
+    if 'python27' in os.getenv('GAE_RUNTIME', 'ENV_VAR_NOT_EXIST'):
         logger.debug('is py2.7 runtime')
         from requests_toolbelt.adapters import appengine
         appengine.monkeypatch()

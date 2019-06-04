@@ -11,17 +11,18 @@ import requests
 
 from . import exceptions as api_client_exceptions
 
-logger = logging.getLogger('HTTP Transport')
+http_logger = logging.getLogger('HTTP Transport')
+okapi_logger = logging.getLogger('okapi')
 logging.basicConfig(level=logging.DEBUG)
 
 # ===================== Google App Engine Support =============================
 # if run in Py 2 GAE env, including dev_appserver, do necessary hacks
 server_software = os.getenv('SERVER_SOFTWARE', 'ENV_VAR_NOT_EXIST')
-logger.debug('SERVER_SOFTWARE: ' + server_software)
+okapi_logger.debug('SERVER_SOFTWARE: ' + server_software)
 if server_software:
-    logger.debug('GAE_RUNTIME: ' + os.getenv('APPENGINE_RUNTIME', 'ENV_VAR_NOT_EXIST'))  # noqa
+    okapi_logger.debug('APPENGINE_RUNTIME: ' + os.getenv('APPENGINE_RUNTIME', 'ENV_VAR_NOT_EXIST'))  # noqa
     if 'python27' in os.getenv('GAE_RUNTIME', 'ENV_VAR_NOT_EXIST'):
-        logger.debug('is py2.7 runtime')
+        okapi_logger.debug('is py2.7 runtime')
         from requests_toolbelt.adapters import appengine
         appengine.monkeypatch()
 
@@ -79,9 +80,9 @@ class HTTPSession(requests.Session):
         pagination_log = '(PAGINATED) ' if paginate else ''
         # TODO implement verbosity
         # logged by urllib
-        # logger.debug('{}Made request to '.format(pagination_log) + url)
-        # logger.debug('{}Response is '.format(pagination_log) + str(resp))
-        # logger.debug('{}Response headers are '.format(pagination_log) + str(resp.headers))  # noqa
+        # http_logger.debug('{}Made request to '.format(pagination_log) + url)
+        # http_logger.debug('{}Response is '.format(pagination_log) + str(resp))
+        # http_logger.debug('{}Response headers are '.format(pagination_log) + str(resp.headers))  # noqa
         if resp.status_code >= 400:
             self.handle_error_response(resp)
 
@@ -103,7 +104,7 @@ class HTTPSession(requests.Session):
         else:
             result = resp.json()
 
-        # logger.debug('{}Response content is '.format(pagination_log) + str(result))  # noqa
+        # http_logger.debug('{}Response content is '.format(pagination_log) + str(result))  # noqa
         return result
 
     @staticmethod
@@ -211,6 +212,7 @@ class APIClient(object):
             ).lower()
             setattr(self, attr_name, resource(api_client=self))
 
+    # FIXME should be URI since it has no scheme
     @property
     def url(self):
         # refactor version so that the argument is only the number

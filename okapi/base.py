@@ -13,7 +13,6 @@ from . import exceptions as api_client_exceptions
 
 http_logger = logging.getLogger('HTTP Transport')
 okapi_logger = logging.getLogger('okapi')
-logging.basicConfig(level=logging.DEBUG)
 
 # ===================== Google App Engine Support =============================
 # if run in Py 2 GAE env, including dev_appserver, do necessary hacks

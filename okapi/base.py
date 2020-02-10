@@ -219,5 +219,5 @@ class APIClient(object):
         return (
             '{}/{}/'.format(self.host, self.version)
             if self.version
-            else self.host
+            else self.host + '/'
         )

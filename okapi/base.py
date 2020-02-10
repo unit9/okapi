@@ -216,4 +216,8 @@ class APIClient(object):
     def url(self):
         # refactor version so that the argument is only the number
         # e.g. 1 opposed to v1?
-        return '{}/{}/'.format(self.host, self.version)
+        return (
+            '{}/{}/'.format(self.host, self.version)
+            if self.version
+            else self.host
+        )

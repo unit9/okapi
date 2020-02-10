@@ -141,10 +141,10 @@ class Resource(object):
         self.api_client = api_client
 
         if self.path is None:
-            # turns into "standard" REST resource paths
+            # turns into "standard" REST resource paths (without plural s)
             self.path = re.sub(
                 r"(\w)([A-Z])", r"\1-\2", self.__class__.__name__
-            ).lower().replace('_', '-') + 's'
+            ).lower().replace('_', '-')
 
     @property
     def url(self):

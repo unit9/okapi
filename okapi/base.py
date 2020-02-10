@@ -70,7 +70,12 @@ class HTTPSession(requests.Session):
 
     def _request(self, method, url, json=None, result=None, paginate=False,
                  data=None):
-        """Core transport layer"""
+        """
+        Core transport layer
+
+        Returns response object if paginate is False, else returns
+        concanated response.json()
+        """
         if json is not None:
             resp = self.request(method, url, json=json)
         else:
@@ -101,7 +106,7 @@ class HTTPSession(requests.Session):
                 else:
                     result += resp.json()
         else:
-            result = resp.json()
+            result = resp
 
         # http_logger.debug('{}Response content is '.format(pagination_log) + str(result))  # noqa
         return result
@@ -172,11 +177,13 @@ class Resource(object):
         return data
 
     def list(self, paginate=False, *args, **kwargs):
+        """
+        When paginate is True, return concanated data else return response obj
+        """
         url_queries = urlencode(kwargs)
-        data = self.api_client.session._request(
+        return self.api_client.session._request(
             method='GET', url=self.url + '?' + url_queries, paginate=paginate
         )
-        return data
 
     def create(self):
         raise NotImplementedError

@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 
@@ -167,12 +168,12 @@ class Resource(object):
 
     # TODO implement customizable methods for caching
     # @lrudecorator(512)
-    def get(self, *args, **kwargs):
+    def get(self, identifier, *args, **kwargs):
         """put URL query as kwargs"""
         url_queries = urlencode(kwargs)
-        identifier = str(args[0])
         data = self.api_client.session._request(
-            method='GET', url=self.construct_url(identifier) + '?' + url_queries  # noqa
+            method='GET',
+            url=self.construct_url(identifier) + '?' + url_queries
         )
         return data
 
@@ -185,8 +186,21 @@ class Resource(object):
             method='GET', url=self.url + '?' + url_queries, paginate=paginate
         )
 
-    def create(self):
-        raise NotImplementedError
+    def create(self, data, *args, **kwargs):
+        url_queries = urlencode(kwargs)
+        return self.api_client.session._request(
+            method='POST',
+            url=self.url + '?' + url_queries,
+            json=data
+        )
+
+    def update(self, identifier, data, *args, **kwargs):
+        url_queries = urlencode(kwargs)
+        return self.api_client.session._request(
+            method='PUT',
+            url=self.construct_url(identifier) + '?' + url_queries,
+            json=data
+        )
 
     def delete(self, identifier):
         raise NotImplementedError

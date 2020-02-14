@@ -143,8 +143,16 @@ class HTTPSession(requests.Session):
 class Resource(object):
     path = None
 
-    def __init__(self, api_client):
+    def __getattr__(self, item):
+        # allow non-ended resource URLs
+        _Resource = type(item, (Resource,), {})
+        resource = _Resource(self.api_client, self)
+        setattr(self, item, resource)
+        return resource
+
+    def __init__(self, api_client, parent_resource=None):
         self.api_client = api_client
+        self.parent_resource = parent_resource
 
         if self.path is None:
             # turns into "standard" REST resource paths (without plural s)
@@ -154,7 +162,14 @@ class Resource(object):
 
     @property
     def url(self):
-        return self.api_client.url + self.path
+        return self.api_client.url + self._path
+
+    @property
+    def _path(self):
+        return (
+            self.path if not self.parent_resource
+            else self.parent_resource._path + '/' + self.path
+        )
 
     def construct_url(self, *args):
         """
@@ -226,6 +241,7 @@ class APIClient(object):
             host=host
         )
 
+        # if resources class attribute is set
         for resource in self.resources:
             attr_name = re.sub(
                 r"(\w)([A-Z])", r"\1_\2", resource.__name__

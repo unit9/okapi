@@ -178,7 +178,7 @@ class Resource(object):
         :param args:
         :return:
         """
-        path = '/'.join(args)
+        path = '/'.join([str(e) for e in args])
         return self.url + '/' + path
 
     # TODO implement customizable methods for caching

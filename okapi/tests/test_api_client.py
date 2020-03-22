@@ -1,7 +1,7 @@
 import pytest
 
 from okapi import APIClient, Resource
-from okapi.exceptions import InvalidParamsError
+from okapi.exceptions import BadRequestError
 
 
 def test_api_client():
@@ -41,5 +41,5 @@ def test_api_client_exception():
         host='https://api.spacexdata.com',
         version='v3'
     )
-    with pytest.raises(InvalidParamsError):
+    with pytest.raises(BadRequestError):
         dragoons = space_x_api_client.dragoon.list()

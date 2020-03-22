@@ -117,7 +117,7 @@ class HTTPSession(requests.Session):
         # Generalized mapping of API response codes to exception classes
         # Good to have more specific implementation in the APIClient
         status_codes = {
-            4: api_client_exceptions.InvalidParamsError,
+            4: api_client_exceptions.BadRequestError,
             5: api_client_exceptions.GeneralInternalHostError,
         }
 

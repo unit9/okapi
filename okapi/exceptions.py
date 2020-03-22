@@ -22,7 +22,7 @@ class APIClientError(Exception):
         return self.message
 
 
-class InvalidParamsError(APIClientError):
+class BadRequestError(APIClientError):
     message = 'Invalid parameters given'
 
 

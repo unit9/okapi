@@ -181,40 +181,75 @@ class Resource(object):
         path = '/'.join([str(e) for e in args])
         return self.url + '/' + path
 
-    # TODO implement customizable methods for caching
-    # @lrudecorator(512)
-    def get(self, identifier, *args, **kwargs):
-        """put URL query as kwargs"""
-        url_queries = urlencode(kwargs)
+    def get(self, identifier, forced_url='', request_kwargs=None, *args, **kwargs):
+        if request_kwargs is None:
+            request_kwargs = {}
+
+        if not forced_url:
+            url_queries = urlencode(kwargs)
+            url = self.construct_url(identifier) + '?' + url_queries
+        else:
+            url = self.api_client.url + forced_url
+
         data = self.api_client.session._request(
             method='GET',
-            url=self.construct_url(identifier) + '?' + url_queries
+            url=url,
+            **request_kwargs
         )
         return data
 
-    def list(self, paginate=False, *args, **kwargs):
+    def list(self, paginate=False, forced_url='', request_kwargs=None, *args, **kwargs):
         """
         When paginate is True, return concanated data else return response obj
         """
-        url_queries = urlencode(kwargs)
+        if request_kwargs is None:
+            request_kwargs = {}
+
+        if not forced_url:
+            url_queries = urlencode(kwargs)
+            url = self.url + '?' + url_queries
+        else:
+            url = self.api_client.url + forced_url
+
         return self.api_client.session._request(
-            method='GET', url=self.url + '?' + url_queries, paginate=paginate
+            method='GET',
+            url=url,
+            paginate=paginate,
+            **request_kwargs
         )
 
-    def create(self, data, *args, **kwargs):
-        url_queries = urlencode(kwargs)
+    def create(self, data, forced_url='', request_kwargs=None, *args, **kwargs):
+        if request_kwargs is None:
+            request_kwargs = {}
+
+        if not forced_url:
+            url_queries = urlencode(kwargs)
+            url = self.url + '?' + url_queries
+        else:
+            url = self.api_client.url + forced_url
+
         return self.api_client.session._request(
             method='POST',
-            url=self.url + '?' + url_queries,
-            json=data
+            url=url,
+            json=data,
+            **request_kwargs
         )
 
-    def update(self, identifier, data, *args, **kwargs):
-        url_queries = urlencode(kwargs)
+    def update(self, identifier, data, forced_url='', request_kwargs=None, *args, **kwargs):
+        if request_kwargs is None:
+            request_kwargs = {}
+
+        if not forced_url:
+            url_queries = urlencode(kwargs)
+            url = self.construct_url(identifier) + '?' + url_queries
+        else:
+            url = self.api_client.url + forced_url
+
         return self.api_client.session._request(
             method='PUT',
-            url=self.construct_url(identifier) + '?' + url_queries,
-            json=data
+            url=url,
+            json=data,
+            **request_kwargs
         )
 
     def delete(self, identifier):

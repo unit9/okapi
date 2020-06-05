@@ -73,11 +73,12 @@ Disclaimer, this only from my quick glance looking from various
 similar projects. So my points below are arguably weak.
 
 - okapi tries to automate every things possible for the least amount of
-code
+    code
 - it tries conceptualize REST resources correctly as opposed to just
-HTTP methods or generic methods
-- the only apparent advantage I see is better namespacing and closer
-resemblance to REST terminology.
+    HTTP methods or generic methods
+- the only apparent advantage I see is way easier mocking because URL are 
+    methods instead of passed as args, better namespacing and closer
+    resemblance to REST terminology.
 
 
 ## Compatibility

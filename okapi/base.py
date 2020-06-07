@@ -70,7 +70,7 @@ class HTTPSession(requests.Session):
         return next_url
 
     def _request(self, method, url, json=None, result=None, paginate=False,
-                 data=None):
+                 data=None, **kwargs):
         """
         Core transport layer
 
@@ -78,9 +78,9 @@ class HTTPSession(requests.Session):
         concanated response.json()
         """
         if json is not None:
-            resp = self.request(method, url, json=json)
+            resp = self.request(method, url, json=json, **kwargs)
         else:
-            resp = self.request(method, url, data=data)
+            resp = self.request(method, url, data=data, **kwargs)
 
         pagination_log = '(PAGINATED) ' if paginate else ''
         # TODO implement verbosity
